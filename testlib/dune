@@ -1,0 +1,4 @@
+(library
+ (name testlib_eio)
+ (modules testlib_eio)
+ (libraries alcotest caqti caqti_eio eio testlib))

@@ -1,0 +1,3 @@
+(test
+ (name main)
+ (libraries alcotest caqti caqti-eio testlib_eio))

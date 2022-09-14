@@ -1,0 +1,10 @@
+(copy_files# stubs/*)
+
+(library
+ (name caqti_eio)
+ (public_name caqti-eio)
+ (wrapped false)
+ (libraries caqti logs eio unix eio_main)
+ (foreign_stubs
+  (language c)
+  (names caqti_eio_unix_stubs)))
