@@ -22,12 +22,11 @@ open Eio.Std
 
 module System = struct
 
-  let map: ('a -> 'b) -> 'a Promise.t -> 'b Promise.t = fun
-    f t ->
-    Promise.create_resolved (f (Promise.await t))
-
   let bind : 'a Promise.t -> ('a -> 'b Promise.t) -> 'b Promise.t = fun p f ->
     f (Promise.await p)
+
+  let map: ('a -> 'b) -> 'a Promise.t -> 'b Promise.t = fun
+    f t -> bind t (fun x -> Promise.create_resolved (f x))
 
 
   type 'a future = 'a Promise.t
@@ -46,7 +45,10 @@ module System = struct
     | exn -> g () >>= fun () -> raise exn
 
   let join ps =
-    Fiber.all (List.map (fun p () -> (Promise.await p)) ps) ;
+    Fiber.all
+      (List.map (fun p ->
+        (fun  () -> Promise.await p))
+       ps);
     return ()
 
   module Mvar = struct
